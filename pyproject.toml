@@ -44,7 +44,7 @@ dependencies = [
 ]
 [project.optional-dependencies]
 elasticsearch = [
-  "elasticsearch<8,>=5",
+  "elasticsearch<9,>=8",
 ]
 testing = [
   "coverage",

@@ -57,10 +57,19 @@ server is found all elasticsearch tests will be skipped. Note that the tests
 are destructive - during the teardown phase they will wipe the cluster clean so
 make sure you don't run them against an instance with data you wish to keep.
 
+A Compose file matching the one CI uses is provided, so the same server can be
+started locally::
+
+    docker compose -f docker/docker-compose.yml up -d --wait
+    docker compose -f docker/docker-compose.yml down -v
+
+Set ``ELASTIC_VERSION`` to test against a different 8.x release, and
+``TEST_ELASTICSEARCH_URL`` if the server is not on ``http://localhost:9200/``.
+
 If you want to run the geo-django tests you may need to review the
 `GeoDjango GEOS and GDAL settings`_ before running these commands::
 
 	cd test_haystack
-	./run_tests.py elasticsearch_tests
+	./run_tests.py elasticsearch8_tests
 
 .. _GeoDjango GEOS and GDAL settings: https://docs.djangoproject.com/en/stable/ref/contrib/gis/install/geolibs/#geos-library-path

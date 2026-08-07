@@ -1,0 +1,27 @@
+# Test services for the Haystack suite.
+#
+# Used by CI and usable locally:
+#
+#     docker compose -f docker/docker-compose.yml up -d --wait
+#     docker compose -f docker/docker-compose.yml down -v
+#
+# ELASTIC_VERSION pins both the server image and the ``elasticsearch`` client
+# installed by CI, so keep the two in sync.
+
+name: haystack-test
+
+services:
+  elastic:
+    image: elasticsearch:${ELASTIC_VERSION:-8.19.3}
+    environment:
+      discovery.type: single-node
+      # Elasticsearch 8 enables TLS and authentication by default; the test
+      # suite talks to the cluster over plain HTTP without credentials.
+      xpack.security.enabled: "false"
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
